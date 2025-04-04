@@ -1,0 +1,120 @@
+ /* src/components/CodeEntry.css */
+ .code-entry {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f7f9fc;
+  }
+  
+  .code-entry h1 {
+    margin: 0 0 10px 0;
+    color: #333;
+  }
+  
+  .code-entry h2 {  
+    margin: 0 0 2rem 0;
+    color: #1a73e8;
+  }
+  
+  .code-display {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .code-dots {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+  }
+  
+  .code-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #1a73e8;
+    background-color: transparent;
+  }
+  
+  .code-dot.filled {
+    background-color: #1a73e8;
+  }
+  
+  .error-message {
+    color: #d73a49;
+    font-size: 0.9rem;
+    margin: 10px 0 0 0;
+  }
+  
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  .digit-btn, .function-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    font-size: 1.8rem;
+    border-radius: 10px;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+  }
+  
+  .digit-btn:hover, .function-btn:hover {
+    background-color: #f0f4f8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .function-btn {
+    grid-column: span 1.5;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    max-width: 350px;
+    margin-top: auto;
+  }
+  
+  .back-btn, .submit-btn {
+    flex: 1;
+    padding: 15px;
+    font-size: 1.1rem;
+  }
+  
+  .back-btn {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .back-btn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .submit-btn {
+    background-color: #1a73e8;
+    color: white;
+  }
+  
+  .submit-btn:hover:not([disabled]) {
+    background-color: #1558b7;
+  }
+  
+  .submit-btn[disabled] {
+    background-color: #99c0f7;
+    cursor: not-allowed;
+  }
