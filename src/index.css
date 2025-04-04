@@ -1,24 +1,131 @@
-:root {
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
+/* src/index.css */
+/* Base styling for the entire app */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    background-color: var(--background);
+    color: var(--text-primary);
     line-height: 1.5;
-    font-weight: 400;
-  
-    color-scheme: light;
-    color: #333;
-    background-color: #f5f7fa;
-  
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
-  * {
-    box-sizing: border-box;
+  #root {
+    height: 100%;
+    width: 100%;
   }
   
-  body {
-    margin: 0;
+  /* Disable text selection for a more app-like feel on touch devices */
+  .no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide scrollbars but allow scrolling */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  /* Utility classes */
+  .text-center {
+    text-align: center;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .flex-col {
+    flex-direction: column;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  .justify-between {
+    justify-content: space-between;
+  }
+  
+  .w-full {
+    width: 100%;
+  }
+  
+  .h-full {
+    height: 100%;
+  }
+  
+  .gap-1 {
+    gap: var(--spacing-1);
+  }
+  
+  .gap-2 {
+    gap: var(--spacing-2);
+  }
+  
+  .gap-4 {
+    gap: var(--spacing-4);
+  }
+  
+  .gap-8 {
+    gap: var(--spacing-8);
+  }
+  
+  .mb-4 {
+    margin-bottom: var(--spacing-4);
+  }
+  
+  .mb-8 {
+    margin-bottom: var(--spacing-8);
+  }
+  
+  .mt-4 {
+    margin-top: var(--spacing-4);
+  }
+  
+  .mt-8 {
+    margin-top: var(--spacing-8);
+  }
+  
+  /* Accessibility utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
     padding: 0;
-    min-height: 100vh;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  /* Focus outline for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
