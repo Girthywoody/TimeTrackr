@@ -7,7 +7,7 @@ import CodeEntry from './components/CodeEntry';
 import SuccessScreen from './components/SuccessScreen';
 
 // Import our styles
-import './styles/theme.css';
+import './styles/Theme.css';
 
 const App = () => {
   return (
