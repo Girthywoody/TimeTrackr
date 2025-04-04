@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import '../styles/layout.css';
+import '../styles/Layout.css';
 
 const Layout = ({ 
   children, 

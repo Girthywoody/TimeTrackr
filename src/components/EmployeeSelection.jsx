@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Layout from './Layout';
-import '../styles/employee-selection.css';
+import '../styles/EmployeeSelection.css';
 
 // Mock employee data - replace with Firebase fetching later
 const employeeList = [

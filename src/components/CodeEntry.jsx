@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from './Layout';
-import '../styles/code-entry.css';
+import '../styles/CodeEntry.css';
 
 const CodeEntry = () => {
   const navigate = useNavigate();
