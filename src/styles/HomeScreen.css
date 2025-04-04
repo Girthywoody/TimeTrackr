@@ -70,26 +70,32 @@
   background-color: var(--secondary-dark);
 }
 
-.admin-link {
+.admin-section {
   margin-top: auto;
   width: 100%;
   max-width: 400px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.admin-btn {
+.admin-btn, .diagnostic-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 0.75rem 1.5rem;
   font-size: 1.1rem;
-  color: var(--text-secondary);
-  background-color: transparent;
-  border: 1px solid var(--border);
   border-radius: 8px;
   transition: all 0.3s ease;
   gap: 0.5rem;
+  text-decoration: none;
+}
+
+.admin-btn {
+  color: var(--text-secondary);
+  background-color: transparent;
+  border: 1px solid var(--border);
 }
 
 .admin-btn:hover {
@@ -98,7 +104,20 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.admin-icon {
+.diagnostic-btn {
+  color: var(--text-tertiary);
+  background-color: transparent;
+  border: 1px dashed var(--border);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.diagnostic-btn:hover {
+  background-color: #f8f9fa;
+  color: var(--text-secondary);
+}
+
+.admin-icon, .diagnostic-icon {
   width: 20px;
   height: 20px;
 }
@@ -107,6 +126,11 @@
   .time-display h1 {
     font-size: 3rem;
   }
+  
+  .time-display h2 {
+    font-size: 1.2rem;
+  }
+  
   .company-logo h1 {
     font-size: 2rem;
   }
@@ -130,6 +154,4 @@
   .check-in-btn, .check-out-btn {
     width: 100%;
   }
-}.time-display h2 {
-    font-size: 1.2rem;
-  }
+}
