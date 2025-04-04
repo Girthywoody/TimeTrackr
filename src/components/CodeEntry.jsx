@@ -1,43 +1,38 @@
 // src/components/CodeEntry.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { getEmployeeById, verifyEmployeeCode, recordTimeAction } from '../services/firebase';
 import Layout from './Layout';
 import '../styles/CodeEntry.css';
 
 const CodeEntry = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { employeeId, action } = useParams();
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [processing, setProcessing] = useState(false);
   
-  // Mock function to get employee data - replace with Firebase fetching later
+  // Fetch employee data from Firebase
   useEffect(() => {
-    // Simulate loading from a database
-    const loadEmployee = setTimeout(() => {
-      // In a real app, you would fetch this from Firebase
-      const employeeData = {
-        1: { id: 1, name: 'John Smith', department: 'Engineering', code: '1234' },
-        2: { id: 2, name: 'Sarah Johnson', department: 'Marketing', code: '2345' },
-        3: { id: 3, name: 'Michael Brown', department: 'Finance', code: '3456' },
-        4: { id: 4, name: 'Emily Davis', department: 'Human Resources', code: '4567' },
-        5: { id: 5, name: 'David Wilson', department: 'Operations', code: '5678' },
-        6: { id: 6, name: 'Jessica Martinez', department: 'Customer Support', code: '6789' },
-        7: { id: 7, name: 'Robert Taylor', department: 'Product', code: '7890' },
-        8: { id: 8, name: 'Jennifer Anderson', department: 'Sales', code: '8901' },
-        9: { id: 9, name: 'Christopher Thomas', department: 'IT', code: '9012' },
-        10: { id: 10, name: 'Amanda White', department: 'Legal', code: '0123' },
-        11: { id: 11, name: 'Matthew Garcia', department: 'Engineering', code: '1122' },
-        12: { id: 12, name: 'Lisa Rodriguez', department: 'Marketing', code: '2233' },
-      };
-      
-      setEmployee(employeeData[employeeId]);
-      setLoading(false);
-    }, 600); // Simulated load time
+    const fetchEmployee = async () => {
+      try {
+        setLoading(true);
+        const employeeData = await getEmployeeById(employeeId);
+        setEmployee(employeeData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching employee:', error);
+        setError('Failed to load employee data. Please try again.');
+        setShowError(true);
+        setLoading(false);
+      }
+    };
     
-    return () => clearTimeout(loadEmployee);
+    fetchEmployee();
   }, [employeeId]);
   
   // Clear error message after 3 seconds
@@ -72,37 +67,42 @@ const CodeEntry = () => {
     setShowError(false);
   };
   
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (processing) return;
+    
     if (code.length < 4) {
       setError('Please enter a 4-digit code');
       setShowError(true);
       return;
     }
     
-    // In a real app, you would validate this against your Firebase database
-    if (employee && code === employee.code) {
-      // Record the check-in/check-out in your system
-      const timestamp = new Date().toISOString();
-      console.log(`Employee ${employee.name} ${action} at ${timestamp}`);
+    try {
+      setProcessing(true);
       
-      // In a real app with Firebase, you would do something like:
-      // db.collection('timeRecords').add({
-      //   employeeId: Number(employeeId),
-      //   employeeName: employee.name,
-      //   action: action,
-      //   timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      // });
+      // Verify the code using Firebase
+      const isValid = await verifyEmployeeCode(employeeId, code);
       
-      navigate(`/success/${action}`, { 
-        state: { 
-          employeeName: employee.name,
-          department: employee.department 
-        } 
-      });
-    } else {
-      setError('Invalid code. Please try again.');
+      if (isValid) {
+        // Record the check-in/check-out in Firebase
+        await recordTimeAction(employeeId, action);
+        
+        navigate(`/success/${action}`, { 
+          state: { 
+            employeeName: employee.name,
+            department: employee.department 
+          } 
+        });
+      } else {
+        setError('Invalid code. Please try again.');
+        setShowError(true);
+        setCode('');
+      }
+    } catch (error) {
+      console.error('Error processing action:', error);
+      setError('An error occurred. Please try again.');
       setShowError(true);
-      setCode('');
+    } finally {
+      setProcessing(false);
     }
   };
   
@@ -128,7 +128,7 @@ const CodeEntry = () => {
       '#0284c7',
       '#7c2d12',
     ];
-    return colors[id % colors.length];
+    return colors[parseInt(id, 10) % colors.length];
   };
   
   if (loading) {
@@ -216,6 +216,7 @@ const CodeEntry = () => {
                   className="keypad-btn function-btn"
                   onClick={handleBackspace}
                   aria-label="Backspace"
+                  disabled={processing}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
@@ -231,6 +232,7 @@ const CodeEntry = () => {
                 key={index}
                 className="keypad-btn digit-btn"
                 onClick={() => handleDigitPress(item)}
+                disabled={processing}
               >
                 {item}
               </button>
@@ -242,15 +244,16 @@ const CodeEntry = () => {
           <button 
             className="btn btn-neutral clear-btn" 
             onClick={handleClear}
+            disabled={processing}
           >
             Clear
           </button>
           <button 
             className="btn btn-primary submit-btn" 
             onClick={handleSubmit}
-            disabled={code.length !== 4}
+            disabled={code.length !== 4 || processing}
           >
-            Submit
+            {processing ? 'Processing...' : 'Submit'}
           </button>
         </div>
       </div>
